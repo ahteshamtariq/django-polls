@@ -1,7 +1,7 @@
 from django.views.generic import DetailView, ListView, RedirectView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from polls.models import Choice, Poll, Vote
 
