@@ -21,7 +21,7 @@ Install the latest version from GitHub:
 
     $ pip install -e git://github.com/ahteshamtariq/django-polls#egg=django-polls
 
-If there is Operation timed out while installing with above please use:
+If there is `Operation timed out` while installing with above command please use:
 
     $ pip install -e git+https://github.com/ahteshamtariq/django-polls#egg=django-polls
 
