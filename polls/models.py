@@ -31,7 +31,7 @@ class Choice(models.Model):
     def count_votes(self):
         return self.vote_set.count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.choice
 
     class Meta:
@@ -43,7 +43,7 @@ class Vote(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'Vote for %s' % (self.choice)
 
     class Meta:
