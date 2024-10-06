@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
+# from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
+# @python_2_unicode_compatible
 class Poll(models.Model):
     question = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -25,7 +25,7 @@ class Poll(models.Model):
 
 
 class Choice(models.Model):
-    poll = models.ForeignKey(Poll)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     choice = models.CharField(max_length=255)
 
     def count_votes(self):
@@ -39,9 +39,9 @@ class Choice(models.Model):
 
 
 class Vote(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    poll = models.ForeignKey(Poll)
-    choice = models.ForeignKey(Choice)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return u'Vote for %s' % (self.choice)
