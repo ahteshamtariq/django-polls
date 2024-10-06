@@ -16,7 +16,7 @@ A simple and reusable polls application for django.
 <!-- If you want to install the latest development version from GitHub: -->
 Install the latest version from GitHub:
 
-    $ pip install -e https://github.com/ahteshamtariq/django-polls#egg=django-polls
+    $ pip install -e git://github.com/ahteshamtariq/django-polls#egg=django-polls
 
 Add `polls` to your `INSTALLED_APPS`:
 
