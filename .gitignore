@@ -3,6 +3,7 @@
 *.pyc
 local_settings.py
 /dist/
+/build/
 /django_polls.egg-info/
 
 # vim
