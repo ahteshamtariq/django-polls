@@ -18,5 +18,8 @@ class VoteAdmin(admin.ModelAdmin):
     model = Vote
     list_display = ('choice', 'user', 'poll')
 
+    class Media:
+        js = ('polls/js/poll_choice_filter.js',)
+
 admin.site.register(Poll, PollAdmin)
 admin.site.register(Vote, VoteAdmin)
