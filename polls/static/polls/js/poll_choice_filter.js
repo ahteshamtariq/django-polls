@@ -1,41 +1,55 @@
-// 'use strict';
+// This script dynamically updates the available choices for a poll based on the poll selected by the user. 
+// It ensures that when a user picks a different poll from a dropdown, only the relevant choices for that poll are shown.
 {
+    // Wait until the entire HTML content of the page has loaded.
     document.addEventListener('DOMContentLoaded', function() {
+        
+        // Get the dropdown field elements for selecting a poll and displaying choices.
+        var pollField = document.getElementById('id_poll');  // Dropdown for selecting a poll.
+        var choiceField = document.getElementById('id_choice');  // Dropdown for displaying choices related to the selected poll.
 
-        var pollField = document.getElementById('id_poll');  // Poll dropdown field
-        var choiceField = document.getElementById('id_choice');  // Choice dropdown field
-
+        // Function that fetches and updates the choices for a selected poll.
         function updateChoices() {
-            var pollId = pollField.value;  // Get the selected poll ID
+            // Get the currently selected poll's ID from the dropdown.
+            var pollId = pollField.value;
 
+            // Check if a poll has been selected (pollId is not empty).
             if (pollId) {
-                // Fetch filtered choices via AJAX based on selected poll
+                // Use Django's jQuery to make an AJAX request to fetch choices for the selected poll.
                 django.jQuery.ajax({
-                    url: window.location.origin + '/polls/get_choices',  // URL for retrieving choices
-                    data: { 'poll': pollId },  // Pass poll ID as data
+                    url: window.location.origin + '/polls/get_choices',  // API endpoint to retrieve choices.
+                    data: { 'poll': pollId },  // Send the selected poll ID as part of the request.
                     success: function(data) {
-                        updateChoicesFields(choiceField, data);  // Update choice dropdown with new options
+                        // On successful retrieval, update the choice dropdown with the new options.
+                        updateChoicesFields(choiceField, data);
                     }
                 });
             } else {
-                choiceField.value = '';  // Clear choice field if no poll is selected
+                // If no poll is selected, clear the choice dropdown.
+                choiceField.value = '';
             }
         }
 
-        // Updates the choice dropdown options
+        // Function to update the options in the choice dropdown.
         function updateChoicesFields(choiceField, data) {
-            choiceField.innerHTML = '';  // Clear current options
+            // Clear any existing options in the choice dropdown.
+            choiceField.innerHTML = '';
 
-            var defaultOption = new Option('---------', '');  // Add default option
+            // Add a default empty option to the dropdown (e.g., for "Select a choice").
+            var defaultOption = new Option('---------', '');
             choiceField.appendChild(defaultOption);
 
-            // Add new choices returned by AJAX
+            // Loop through each choice returned from the AJAX request.
             data.choices.forEach(function(choice) {
-                var newOption = new Option(choice.text, choice.id);  // Create new option element
-                choiceField.appendChild(newOption);  // Append new option to the dropdown
+                // Create a new option element for each choice.
+                var newOption = new Option(choice.text, choice.id);
+                // Add the new choice option to the dropdown.
+                choiceField.appendChild(newOption);
             });
         }
 
-        pollField.addEventListener('change', updateChoices);  // Update choices on poll selection
+        // Attach an event listener to the poll dropdown.
+        // Whenever the user selects a new poll, updateChoices() will be called to refresh the choices.
+        pollField.addEventListener('change', updateChoices);
     });
 }

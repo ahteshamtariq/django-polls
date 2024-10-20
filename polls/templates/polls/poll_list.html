@@ -4,13 +4,20 @@
 
 {% block content %}
 <h1>{% trans "Polls" %}</h1>
+
+<!-- Check if there are any polls to display. -->
 {% if poll_list %}
-<ul>
-    {% for poll in poll_list.all %}
-    <li><a href="{% url 'polls:detail' poll.id %}">{{poll.question}}</a></li>
-    {% endfor %}
-</ul>
+    <ul>
+        <!-- Loop through each poll in the poll_list and display it as a list item. -->
+        {% for poll in poll_list.all %}
+            <!-- Create a link for each poll that directs to its detail page. -->
+            <li><a href="{% url 'polls:detail' poll.id %}">{{ poll.question }}</a></li>
+        {% endfor %}
+    </ul>
+<!-- If there are no polls, display a message to inform the user. -->
 {% else %}
-{% trans "There are no polls available." %}
+    {% trans "There are no polls available." %}
 {% endif %}
 {% endblock %}
+
+
