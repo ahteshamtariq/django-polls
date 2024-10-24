@@ -1,4 +1,5 @@
 from django.views.generic import DetailView, ListView, RedirectView
+from .forms import VoteForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
@@ -21,6 +22,7 @@ class PollListView(ListView):
 # Show details of a specific poll
 class PollDetailView(DetailView):
     model = Poll
+    template_name = 'polls/poll_detail.html' 
 
     # Add votable status for the poll
     def get_context_data(self, **kwargs):
@@ -31,15 +33,19 @@ class PollDetailView(DetailView):
 
 # Handle poll voting and redirect
 class PollVoteView(RedirectView):
+    form_class = VoteForm
     def post(self, request, *args, **kwargs):
         # Get the poll being voted on
-        poll = Poll.objects.get(id=kwargs['pk'])
+        poll = Poll.objects.get(id=request.POST.get('poll'))
         user = request.user
-        # Get the selected choice
-        choice = Choice.objects.get(id=request.POST['choice_pk'])
-        Vote.objects.create(poll=poll, user=user, choice=choice)
+        kwargs['pk'] = request.POST.get('poll')
+        # Get the selected choices
+        choices_ids = request.POST.get('choice').split(',')  # handle multiple choices
+        for choice_id in choices_ids:
+            choice = Choice.objects.get(id=choice_id)
+            Vote.objects.create(poll=poll, user=user, choice=choice)
         messages.success(request, _("Thanks for your vote."))
-        return super().post(request, *args, **kwargs)
+        return super(PollVoteView, self).post(request, *args, **kwargs)
 
     # Redirect the user to the poll's detail page after voting
     def get_redirect_url(self, **kwargs):

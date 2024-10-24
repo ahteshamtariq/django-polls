@@ -57,4 +57,4 @@ class Vote(models.Model):
 
     # Ensure a user can only vote once per poll
     class Meta:
-        unique_together = (('user', 'poll'))
+        unique_together = (('user', 'poll', 'choice'))

@@ -1,0 +1,36 @@
+{% extends "admin/change_form.html" %}
+{% block content %}
+<form id="vote_form" name="vote_form" action="/polls/vote/add" method="POST">
+    <input type="hidden" name="choice" id="hidden_choice_input">
+    {{ block.super }}  <!-- Keeps the existing form content -->
+</form>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const saveButton = document.querySelector('.submit-row input[name="_save"]');
+        
+        if (saveButton) {
+            saveButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                var choices = document.getElementsByName('choices')
+                var choice_values = []
+                choices.forEach(function(choice){
+                    if (choice.checked){
+                        choice_values.push(choice.value)
+                    }
+                })
+                if (choice_values.length == 0){
+                    event.preventDefault();  // Prevent default form submission
+                    return alert('Please Select a Choice!');
+                } else {
+                    console.log('Choice Value', choice_values);
+                    document.vote_form.choice.value = choice_values.join(',');
+                    console.log(document.vote_form.choice.value);
+                    // Submit the form programmatically
+                    document.querySelector('form#vote_form').submit();
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

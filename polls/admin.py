@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .forms import VoteForm
 from polls.models import Poll, Choice, Vote
 
 # Inline choices for Poll in admin (allows adding choices directly in Poll form)
@@ -14,8 +15,15 @@ class PollAdmin(admin.ModelAdmin):
 
 # Admin config for Vote model
 class VoteAdmin(admin.ModelAdmin):
+    form = VoteForm
     model = Vote
     list_display = ('choice', 'user', 'poll')  # Show choice, user, and poll in admin list view
+
+    def get_form(self, request, *args, **kwargs):
+        form = super(VoteAdmin, self).get_form(request, *args, **kwargs)
+        print('in get form')
+        form.base_fields['user'].initial = request.user
+        return form
 
     # Add custom JS for poll choice filtering in the admin
     class Media:
