@@ -2,6 +2,9 @@
 
 A simple and reusable polls application for django.
 
+## Compatiblity
+Current main branch is compatible with `python >= 3.12.X` and `django >= 5.1.X` versions
+
 ## Key features
 
 * basic poll handling (poll, choices, votes)
